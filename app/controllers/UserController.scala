@@ -20,13 +20,13 @@ class UserController @Inject()(cc: ControllerComponents, userDao: UserDAO)(impli
   def create = Action.async(parse.json) { implicit request =>
     val userForm = request.body.as[UserForm]
     val newUser: User = models.User.apply(None, userForm.email, userForm.expo_token, userForm.name)
-    userDao.insert(newUser).map(_ => Ok(Json.obj("email" -> newUser.email, "name" -> newUser.name)))
+    userDao.insert(newUser).map(_ => Ok(Json.obj("email" -> newUser.email, "expo_token"->newUser.expo_token, "name" -> newUser.name)))
   }
 
   def index = Action.async {
     userDao.all().map {
       users => Ok(Json.arr(users.map(u => Json.obj(
-        "email" -> u.email, "name" -> u.name
+        "email" -> u.email, "expo_token"->u.expo_token, "name" -> u.name
       ))))
     }
   }

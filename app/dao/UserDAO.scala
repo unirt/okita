@@ -23,6 +23,7 @@ class UserDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
 
   def all(): Future[Seq[User]] = db.run(Users.result)
   def findById(id: Long): Future[Option[User]] = db.run(Users.filter(_.id === id).result.headOption)
+  def findByEmail(email: String): Future[Option[User]] = db.run(Users.filter(_.email === email).result.headOption)
 
   def insert(user: User): Future[Unit] = db.run(Users += user).map { _ => () }
   def insert(users: Seq[User]): Future[Unit] = db.run(this.Users ++= users).map { _ => () }
